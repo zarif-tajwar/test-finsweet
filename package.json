@@ -53,7 +53,7 @@
   },
   "dependencies": {
     "@finsweet/ts-utils": "^0.40.0",
-    "flickity": "^3.0.0",
+    "flickity": "2.3.0",
     "fslightbox": "^3.4.1",
     "splitting": "^1.0.6"
   },
