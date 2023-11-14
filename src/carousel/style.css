@@ -1,0 +1,7 @@
+.flickity-viewport {
+  width: 100%;
+  overflow: visible !important;
+}
+.flickity-button {
+  display: none;
+}

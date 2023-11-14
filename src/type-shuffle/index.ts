@@ -59,7 +59,7 @@ scrollClasses.forEach((el) => {
       });
     },
     {
-      threshold: Number.isNaN(viewThreshold) ? 0 : viewThreshold,
+      threshold: Number.isNaN(viewThreshold) ? 1 : viewThreshold,
     }
   );
 
