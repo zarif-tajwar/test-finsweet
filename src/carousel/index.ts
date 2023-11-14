@@ -1,5 +1,5 @@
 import 'flickity';
-import 'fslightbox';
+import './style.css';
 
 import type { HtmlElWithNull } from 'src/types/common';
 
@@ -160,16 +160,3 @@ flkty.on('scroll', function (progress: number) {
 
   setProgressLines(scrollActiveIndex);
 });
-
-// @ts-expect-error N/A type declarations
-// const lightbox = new FsLightbox();
-
-// const imgSources = [...document.querySelectorAll('.image')].map((el) => el.cloneNode(true));
-
-// lightbox.props.sources = imgSources;
-
-// // @ts-expect-error underscores arent getting ignored
-// flkty.on('staticClick', function (_, __, ___, cellIndex: number | undefined) {
-//   if (cellIndex === undefined) return;
-//   lightbox.open(cellIndex);
-// });
