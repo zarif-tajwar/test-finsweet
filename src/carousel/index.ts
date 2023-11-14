@@ -1,6 +1,8 @@
-import 'flickity';
 import './style.css';
+import 'fslightbox';
 
+// @ts-expect-error No typescript declaration file
+import Flickity from 'flickity';
 import type { HtmlElWithNull } from 'src/types/common';
 import { scaleValue } from 'src/utils';
 
@@ -31,7 +33,6 @@ const createProgressLines = () => {
 
 createProgressLines();
 
-// @ts-expect-error N/A type declarations
 const flkty = new Flickity(mainCarouselClass, {
   contain: true,
   freeScroll: true,
@@ -126,4 +127,52 @@ flkty.on('scroll', function (progress: number) {
   scrollActiveIndexPrev = scrollActiveIndex;
 
   setProgressLines(scrollActiveIndex);
+});
+
+const imgClassName = '.p-slider .image';
+
+// const
+
+const imgSources = [...document.querySelectorAll(imgClassName)].map((el) => el.cloneNode(true));
+
+// @ts-expect-error global iife import
+const lightbox = new FsLightbox();
+const lightboxNextClass = 'lightbox-next-btn';
+const lightboxPrevClass = 'lightbox-prev-btn';
+
+// lightbox.props.slideButtons.next.width = '60px';
+lightbox.props.sources = imgSources;
+lightbox.props.onOpen = function () {
+  const nextArrButton = document
+    .querySelector('.fslightbox-slide-btn-container-next')
+    ?.querySelector('.fslightbox-slide-btn') as HtmlElWithNull;
+  const prevArrButton = document
+    .querySelector('.fslightbox-slide-btn-container-previous')
+    ?.querySelector('.fslightbox-slide-btn') as HtmlElWithNull;
+
+  [
+    nextArrButton,
+    prevArrButton,
+    ...document.querySelectorAll('.fslightbox-toolbar-button'),
+  ].forEach((el) => {
+    el?.addEventListener('mouseenter', () => {
+      document.querySelector('.cursor_dot')?.classList.add('on-hover');
+    });
+    el?.addEventListener('mouseleave', () => {
+      document.querySelector('.cursor_dot')?.classList.remove('on-hover');
+    });
+  });
+
+  if (!nextArrButton?.classList.contains(lightboxNextClass)) {
+    nextArrButton?.classList.add(lightboxNextClass);
+    prevArrButton?.classList.add(lightboxPrevClass);
+  }
+};
+
+// console.log(lightbox.props);
+
+// @ts-expect-error unable to ignore the unused params
+flkty.on('staticClick', function (event, pointer, cellElement, cellIndex: number | undefined) {
+  if (cellIndex === undefined) return;
+  lightbox.open(cellIndex);
 });

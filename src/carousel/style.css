@@ -1,7 +1,13 @@
+@import url('https://unpkg.com/flickity@2.3.0/dist/flickity.min.css');
+
 .flickity-viewport {
   width: 100%;
   overflow: visible !important;
 }
 .flickity-button {
   display: none;
+}
+
+.image.fslightbox-source {
+  transform: none !important;
 }
