@@ -6,9 +6,6 @@ import Flickity from 'flickity';
 import type { HtmlElWithNull } from 'src/types/common';
 import { scaleValue } from 'src/utils';
 
-// Variables
-const parallaxPercentage = 49;
-
 const mainCarouselClass = '.p-slider-container';
 const mainSlidesClass = '.p-slider';
 
@@ -64,31 +61,33 @@ const progressInitialScaleY = progressLines[0]
 
 const setImagePositions = () => {
   mainSlides.forEach((el) => {
-    const elClientRect = el?.getBoundingClientRect();
+    if (!el) return;
+    const elClientRect = el.getBoundingClientRect();
 
-    if (!elClientRect) return;
+    const viewportWidth = window.innerWidth;
+    const elLeftOffset = elClientRect.left;
+    const elRightOffset = elClientRect.right;
 
-    const parentClientRect = document.querySelector(mainCarouselClass)?.getBoundingClientRect();
+    const isElementInViewport = elRightOffset >= 0 && elLeftOffset <= viewportWidth;
 
-    if (!parentClientRect) return;
+    if (isElementInViewport) {
+      const elWidth = elClientRect.width;
 
-    const elementOffset = elClientRect.left + elClientRect.width;
-    const parentWidth = parentClientRect.width + elClientRect.width;
+      const maxRightOffset = viewportWidth + elWidth;
+      const minRightOffset = 0;
 
-    const myProgress = elementOffset / parentWidth;
-    let slideProgress = parallaxPercentage * myProgress;
+      const imageEL = el.querySelector('.image') as HtmlElWithNull;
 
-    if (slideProgress > parallaxPercentage) {
-      slideProgress = parallaxPercentage;
-    } else if (slideProgress < 0) {
-      slideProgress = 0;
+      if (!imageEL) return;
+      const imageWidth = imageEL.getBoundingClientRect().width;
+      const imageX = scaleValue(
+        elRightOffset,
+        [minRightOffset, maxRightOffset],
+        [0, imageWidth - elWidth]
+      );
+
+      imageEL.style.transform = `translateX(-${imageX}px)`;
     }
-
-    const imageEl = el?.querySelector('.image') as HtmlElWithNull;
-
-    if (!imageEl) return;
-
-    imageEl.style.transform = `translateX(-${slideProgress}%)`;
   });
 };
 
